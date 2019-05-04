@@ -13,10 +13,36 @@ services:
       - 5000:80
     depends_on:
       - backend-1
+      - backend-2
     restart: unless-stopped
 
   backend-1:
     build: ./backend
+    environment:
+      POSTGRES_CONNECTION_URL: postgres://postgres:password@postgres:5432/postgres
+      RANDOM_DELAY: 1
     ports:
       - 5001:5000
+      - 6001:6000
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  backend-2:
+    build: ./backend
+    environment:
+      POSTGRES_CONNECTION_URL: postgres://postgres:password@postgres:5432/postgres
+      RARE_DELAY: 1
+      CREATE_TODO_BUG: 1
+    ports:
+      - 5002:5000
+      - 6002:6000
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:11.2-alpine
+    environment:
+      POSTGRES_PASSWORD: password
     restart: unless-stopped
