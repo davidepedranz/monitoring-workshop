@@ -46,3 +46,25 @@ services:
     environment:
       POSTGRES_PASSWORD: password
     restart: unless-stopped
+
+  bot:
+    build: ./bot
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:6.1.6
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/dashboards/:/var/lib/grafana/dashboards/
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v2.9.2
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
