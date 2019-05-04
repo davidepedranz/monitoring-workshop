@@ -1,4 +1,3 @@
-import os
 from http import HTTPStatus
 from uuid import UUID
 
@@ -36,10 +35,6 @@ def make_todos_blueprint(repository: Repository) -> Blueprint:
             return "", HTTPStatus.UNSUPPORTED_MEDIA_TYPE
         else:
             text = request.json["text"]
-
-            if os.environ.get("CREATE_TODO_BUG") and "bug" in text:
-                return "", HTTPStatus.INTERNAL_SERVER_ERROR
-
             try:
                 id_ = repository.insert(text=text)
                 return jsonify(id=id_), HTTPStatus.CREATED
