@@ -6,13 +6,14 @@ import pytest
 from app.models.stats import Stats
 from app.models.todo import Todo
 from app.repository.base import Repository
+from app.repository.instrumented import InstrumentedRepository
 from app.repository.memory import InMemoryRepository
 from app.repository.postgres import PostgresRepository
 
 
 def pytest_generate_tests(metafunc):
     if "repository" in metafunc.fixturenames:
-        metafunc.parametrize("repository", ["in_memory", "postgres"], indirect=True)
+        metafunc.parametrize("repository", ["in_memory", "postgres", "instrumented_in_memory"], indirect=True)
 
 
 @pytest.fixture
@@ -36,6 +37,8 @@ def repository(request, in_memory_repository, postgres_repository):
         repository = in_memory_repository
     elif request.param == "postgres":
         repository = postgres_repository
+    elif request.param == "instrumented_in_memory":
+        repository = InstrumentedRepository(in_memory_repository)
     else:
         raise ValueError("Invalid repository in test configuration")
     repository._clean()
