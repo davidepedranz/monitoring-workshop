@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 2s
+
+scrape_configs:
+
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - prometheus:9090
+
+  - job_name: backend
+    static_configs:
+      - targets:
+          - backend-1:6000
+          - backend-2:6000
