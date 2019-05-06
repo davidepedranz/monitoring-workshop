@@ -7,12 +7,37 @@ from app.models.stats import Stats
 from app.models.todo import Todo
 from app.repository.base import Repository
 from app.repository.memory import InMemoryRepository
+from app.repository.postgres import PostgresRepository
+
+
+def pytest_generate_tests(metafunc):
+    if "repository" in metafunc.fixturenames:
+        metafunc.parametrize("repository", ["in_memory", "postgres"], indirect=True)
+
+
+@pytest.fixture
+def in_memory_repository():
+    yield InMemoryRepository()
+
+
+@pytest.fixture
+def postgres_repository():
+    repository = PostgresRepository.factory()
+    repository.connect()
+    repository.initialize()
+    yield repository
+    repository.disconnect()
 
 
 # noinspection PyProtectedMember
 @pytest.fixture
-def repository():
-    repository = InMemoryRepository()
+def repository(request, in_memory_repository, postgres_repository):
+    if request.param == "in_memory":
+        repository = in_memory_repository
+    elif request.param == "postgres":
+        repository = postgres_repository
+    else:
+        raise ValueError("Invalid repository in test configuration")
     repository._clean()
     yield repository
     repository._clean()

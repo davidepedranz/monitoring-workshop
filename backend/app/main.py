@@ -5,12 +5,17 @@ from flask import Flask, Response
 
 from app.apis.todo import make_todos_blueprint
 from app.repository.base import Repository
-from app.repository.memory import InMemoryRepository
+from app.repository.postgres import PostgresRepository
 
 
 def main() -> None:
-    repository = InMemoryRepository()
-    run_flask_app(repository)
+    repository = PostgresRepository.factory()
+    repository.connect()
+    try:
+        repository.initialize()
+        run_flask_app(repository)
+    finally:
+        repository.disconnect()
 
 
 def run_flask_app(repository: Repository) -> NoReturn:
