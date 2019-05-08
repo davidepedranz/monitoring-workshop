@@ -1,6 +1,6 @@
 # Monitoring Workshop
 
-This repository contains the demo presented in the DISI Industrial Workshop at the University of Trento on 9. May 2019. The slides are available [slides.pdf](here).
+This repository contains the demo presented in the DISI Industrial Workshop at the University of Trento on 9. May 2019. The slides are available in the [slides](slides) folder.
 
 **Disclaimer**: The setup and the code present in this demo are **NOT** production-ready and do contain serious security problems (missing authentication, too broad privileges, etc.). The demo is for the only purpose of illustrating concepts, patterns and tools useful to implement monitoring in real-world applications. Use it at your own risk!
 
