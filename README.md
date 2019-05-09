@@ -11,6 +11,7 @@ The demo uses Docker Compose to run all the different needed components. Each co
 ## Demo
 
 The demo is self-contained and uses Docker containers and Docker Compose.
+You can move from one step to the next of the demo using git tags (`step_1`, `step_2`, `step_3`, `step_4`, `step_5`). Please remember to stop, remove, build and start your containers (see below) when moving from one step to the next one.
 
 ### Start
 
